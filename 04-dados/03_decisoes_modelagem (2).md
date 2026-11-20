@@ -123,24 +123,9 @@ Este documento registra **o que é entidade, atributo ou relacionamento no DER v
 | `recurso` | `id_recurso` | | Cadastro dos recursos (nome UNIQUE) |
 | `sala_recurso` | (`id_sala`, `id_recurso`) | `id_sala`, `id_recurso` | Multivalorado `{recursos_disponiveis}` |
 
-Total: **8 tabelas** (o edital exige pelo menos 6).
-
 ---
 
-## 7. Pontos de atenção (o DER v1 versus o enunciado)
-
-O DER foi construído a partir do inventário, e o inventário era genérico. Vale a equipe revisar estes pontos em 10/11, porque o professor pode perguntar sobre eles na defesa:
-
-1. **Recursos ainda não aparecem como entidade no DER.** O enunciado diz que "um mesmo recurso está disponível em várias salas", o que é um N:N entre Sala e Recurso. Com `{recursos_disponiveis}` como atributo, o DER mostra só metade da ideia. A solução lógica (seção 6) resolve, mas o ideal na v2 é incluir a entidade **Recurso** e o N:N **Sala ↔ Recurso** no próprio DER. Isso também deixaria a busca por recurso explícita no conceitual.
-2. **Identificação do solicitante.** O enunciado fala em **matrícula, nome, setor e telefone**. O DER usa `cpf`, `email`, `curso_depto` e `tipo_usuario`, e não tem matrícula. Sugestão: incluir `matricula` (UNIQUE) em Usuário e confirmar se `curso_depto` cobre o "setor".
-3. **Nomes de campos de Sala.** O enunciado diz **código, nome, localização e capacidade**. O DER usa `nome_numero`, `bloco_localizacao` e `capacidade_maxima`. Os campos equivalem, mas convém garantir que exista um "código" da sala (pode ser o `nome_numero` ou um campo novo).
-4. **Administrador e aprovação não estão no enunciado.** O enunciado fala só em reservar e cancelar. O fluxo Pendente/Aprovada/Recusada e a entidade Administrador são uma **ampliação de domínio** da equipe, permitida pelo edital (Seção 4), e ajudam a atingir o mínimo de entidades e o N:N `gerencia`. Se a regra de choque de horários considerar só reservas Aprovadas, vale explicar na defesa por que o pedido Pendente não bloqueia a sala.
-5. **`situacao = 'Ocupada'` em Sala.** Esse estado é derivável das reservas aprovadas e pode virar redundância. Sugestão: restringir `situacao` a Disponível e Em manutenção.
-6. **`responsavel` em Cancelamento** é texto (Usuário/Admin). Se a equipe quiser rastrear **qual** administrador cancelou, seria necessária uma FK opcional para Administrador.
-
----
-
-## 8. Rastreabilidade com as regras de negócio
+## 7. Rastreabilidade com as regras de negócio
 
 > Numeração provisória; ajustar conforme `00_catalogo_rn.md`.
 
